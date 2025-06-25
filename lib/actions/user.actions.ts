@@ -25,6 +25,7 @@ export async function signInWithCredentials(
     if (error instanceof Error && error.name === 'RedirectError') {
       throw error;
     }
+    console.log('errortest:', error);
 
     return { success: false, message: 'Invalid email or password' };
   }
@@ -68,7 +69,7 @@ export async function signUpUser(prevState: unknown, formData: FormData) {
     if (error instanceof Error && error.name === 'RedirectError') {
       throw error;
     }
-
+    console.log('errortest:', error);
     return {
       success: false,
       message: 'Something went wrong',
