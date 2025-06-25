@@ -1,6 +1,7 @@
 'use server';
 
 import { signIn, signOut } from '@/auth';
+import { isRedirectError } from 'next/dist/client/components/redirect-error';
 import { signInFormSchema, signUpFormSchema } from '../validators';
 import { hashSync } from 'bcrypt-ts-edge';
 import { prisma } from '@/db/prisma';
@@ -21,12 +22,9 @@ export async function signInWithCredentials(
 
     return { success: true, message: 'Signed in successfully' };
   } catch (error) {
-    // 如果错误是一个重定向错误，则重新抛出
-    if (error instanceof Error && error.name === 'RedirectError') {
+    if (isRedirectError(error)) {
       throw error;
     }
-    console.log('errortest:', error);
-
     return { success: false, message: 'Invalid email or password' };
   }
 }
@@ -65,11 +63,9 @@ export async function signUpUser(prevState: unknown, formData: FormData) {
 
     return { success: true, message: 'User created successfully' };
   } catch (error) {
-    // 如果错误是一个重定向错误，则重新抛出
-    if (error instanceof Error && error.name === 'RedirectError') {
+    if (isRedirectError(error)) {
       throw error;
     }
-    console.log('errortest:', error);
     return {
       success: false,
       message: 'Something went wrong',
