@@ -11,12 +11,20 @@ import {
 } from '@/components/ui/card';
 import { APP_NAME } from '@/lib/constants';
 import CredentialsSignInForm from './credentials-signin-form';
+import { auth } from '@/auth';
+import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
   title: 'Sign In',
 };
 
-const SignIn = () => {
+const SignIn = async () => {
+  const session = await auth();
+
+  if (session) {
+    return redirect('/');
+  }
+
   return (
     <div className="w-full max-w-md mx-auto">
       <Card>
